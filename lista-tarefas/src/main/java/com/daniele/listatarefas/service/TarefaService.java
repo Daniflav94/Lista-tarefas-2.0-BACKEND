@@ -4,12 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.daniele.listatarefas.dto.TarefaDTO;
 import com.daniele.listatarefas.exception.RecordNotFoundException;
 import com.daniele.listatarefas.model.Tarefa;
 import com.daniele.listatarefas.model.enums.Repeticao;
@@ -40,9 +40,17 @@ public class TarefaService {
         return tarefaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public Tarefa criar(@Valid Tarefa tarefa) {
+    public Tarefa criar(@Valid TarefaDTO tarefaDTO) {
         // @Valid quando for recebida a requisição, vai validar se o JSON está válido de
         // acordo com as validações inseridas
+        Tarefa tarefa = new Tarefa();
+        tarefa.setNome(tarefaDTO.getNome());
+        tarefa.setAnotacao(tarefaDTO.getAnotacao());
+        tarefa.setConcluida(tarefaDTO.getConcluida());
+        tarefa.setData(tarefaDTO.getData());
+        tarefa.setFavorito(tarefaDTO.getFavorito());
+        tarefa.setRepeticao(tarefaDTO.getRepeticao());
+
         tarefa.setCriadaEm(new Date());
         return tarefaRepository.save(tarefa);
     }
@@ -76,7 +84,7 @@ public class TarefaService {
     }
 
 
-    @Scheduled(cron = "0 0 * ? * *", zone = "America/Sao_Paulo")
+    @Scheduled(cron = "0 0 0 * * ?", zone = "America/Sao_Paulo")
     public List<Tarefa> verificarPeriodos() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -95,7 +103,7 @@ public class TarefaService {
             Repeticao repeticao = tarefa.getRepeticao();
 
             if (repeticao == Repeticao.DIARIAMENTE) {
-                if (dayMonth == dayMonthTarefa || dayMonth > dayMonthTarefa) {
+                if (dayMonth > dayMonthTarefa) {
                     Tarefa novaTarefa = new Tarefa();
                     novaTarefa.setData(new Date());
                     novaTarefa.setMeuDia(true);

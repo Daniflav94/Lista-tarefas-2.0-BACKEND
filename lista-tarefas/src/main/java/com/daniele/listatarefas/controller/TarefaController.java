@@ -1,6 +1,5 @@
 package com.daniele.listatarefas.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.daniele.listatarefas.dto.TarefaDTO;
 import com.daniele.listatarefas.model.Tarefa;
 import com.daniele.listatarefas.service.TarefaService;
 
@@ -48,7 +48,7 @@ public class TarefaController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Tarefa criar(@RequestBody @Valid Tarefa tarefa) { 
+    public Tarefa criar(@RequestBody @Valid TarefaDTO tarefa) { 
         //@Valid quando for recebida a requisição, vai validar se o JSON está válido de acordo com as validações inseridas
         //RequestBody mapeia o corpo da solicitação e compara com o tipo informado
         //Retorno ResponseEntity vai retornar o status 201 (created) invés do 200, 
@@ -56,7 +56,6 @@ public class TarefaController {
         
         /* return ResponseEntity.status(HttpStatus.CREATED)
         .body(tarefaRepository.save(tarefa)); */
-        tarefa.setCriadaEm(new Date());
         return tarefaService.criar(tarefa);
     }
 

@@ -2,7 +2,6 @@ package com.daniele.listatarefas.model;
 
 import java.util.Date;
 
-import org.hibernate.validator.constraints.Length;
 
 import com.daniele.listatarefas.model.enums.Repeticao;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,8 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.Data;
 
 @Data
@@ -29,9 +27,6 @@ public class Tarefa {
     @JsonProperty("_id") //isso vai fazer com que quando for transformado em JSON, o _ vá junto
     private Long id;
     
-    @NotBlank //não permite somente 1 caractere espaço
-    @NotNull // não permite nulo e vazio
-    @Length(min = 5, max = 100)
     @Column(length = 100, nullable = false) // define tamanho e que não aceita valores nulos
     private String nome;
     

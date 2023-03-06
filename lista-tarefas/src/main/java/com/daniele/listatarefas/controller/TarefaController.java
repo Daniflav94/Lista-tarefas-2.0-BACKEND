@@ -60,7 +60,7 @@ public class TarefaController {
     }
 
     @PutMapping("/{id}")
-    public Tarefa editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Tarefa tarefa) {
+    public Tarefa editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid TarefaDTO tarefa) {
         return tarefaService.editar(id, tarefa);       
     }
 

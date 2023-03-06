@@ -56,17 +56,17 @@ public class TarefaService {
     }
 
     @Validated
-    public Tarefa editar(@NotNull @Positive Long id, @Valid Tarefa tarefa) {
+    public Tarefa editar(@NotNull @Positive Long id, @Valid TarefaDTO tarefaDTO) {
         Date dataAtual = new Date();
 
         return tarefaRepository.findById(id)
                 .map(record -> {
-                    record.setNome(tarefa.getNome());
-                    record.setAnotacao(tarefa.getAnotacao());
-                    record.setConcluida(tarefa.getConcluida());
-                    record.setData(tarefa.getData());
-                    record.setFavorito(tarefa.getFavorito());
-                    record.setRepeticao(tarefa.getRepeticao());
+                    record.setNome(tarefaDTO.getNome());
+                    record.setAnotacao(tarefaDTO.getAnotacao());
+                    record.setConcluida(tarefaDTO.getConcluida());
+                    record.setData(tarefaDTO.getData());
+                    record.setFavorito(tarefaDTO.getFavorito());
+                    record.setRepeticao(tarefaDTO.getRepeticao());
 
                     if (record.getData() == dataAtual) {
                         record.setMeuDia(true);
@@ -74,7 +74,7 @@ public class TarefaService {
                         record.setMeuDia(false);
                     }
 
-                    return tarefaRepository.save(tarefa);
+                    return tarefaRepository.save(record);
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 

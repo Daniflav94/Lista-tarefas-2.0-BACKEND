@@ -21,7 +21,7 @@ public class TarefaDTO {
   
     @NotBlank //não permite somente 1 caractere espaço
     @NotNull // não permite nulo e vazio
-    @Length(min = 5, max = 100)
+    @Length(min = 2, max = 100)
     private String nome;
     
     private Boolean favorito = false;

@@ -13,6 +13,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import lombok.Data;
@@ -25,7 +27,7 @@ public class Tarefa {
     @Id // chave primária
     @GeneratedValue(strategy = GenerationType.AUTO) // para que esse valor seja gerado automaticamente pelo banco de dados
     @JsonProperty("_id") //isso vai fazer com que quando for transformado em JSON, o _ vá junto
-    private Long id;
+    protected Long id;
     
     @Column(length = 100, nullable = false) // define tamanho e que não aceita valores nulos
     private String nome;
@@ -47,5 +49,9 @@ public class Tarefa {
     private Repeticao repeticao;
 
     private Date criadaEm;
+
+    @ManyToOne
+    @JoinColumn(name = "idLista") //cria uma coluna nova que é a chave estrangeira e ListaTarefas
+    private ListaTarefas lista;
 
 }

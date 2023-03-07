@@ -72,6 +72,7 @@ public class TarefaService {
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
+    @Validated
     public void delete(@PathVariable @NotNull @Positive Long id) {
         tarefaRepository.delete(tarefaRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(id)));

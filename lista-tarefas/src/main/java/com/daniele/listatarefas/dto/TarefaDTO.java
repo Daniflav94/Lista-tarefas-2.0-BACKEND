@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.daniele.listatarefas.model.ListaTarefas;
 import com.daniele.listatarefas.model.enums.Repeticao;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,5 +39,7 @@ public class TarefaDTO {
 
     @Enumerated(EnumType.STRING)  // representando o enum "escrito"
     private Repeticao repeticao;
+
+    private ListaTarefas lista;
 
 }

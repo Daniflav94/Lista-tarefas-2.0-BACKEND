@@ -19,6 +19,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+@Validated
 @Service
 public class TarefaService {
 
@@ -29,10 +30,9 @@ public class TarefaService {
     }
 
     public List<Tarefa> listar() {
-        return tarefaRepository.findAll();
+        return tarefaRepository.findByStatus("Ativo");
     }
-
-    @Validated
+  
     public Tarefa buscarPorId(@PathVariable @NotNull @Positive Long id) { // @PathVariable indica que o parametro será
                                                                           // parte da url
         // @NotNull @Positive por ser tipo Long (objeto), permite valor nulo e números
@@ -52,11 +52,11 @@ public class TarefaService {
         tarefa.setRepeticao(tarefaDTO.getRepeticao());
         tarefa.setCriadaEm(new Date());
         tarefa.setMeuDia(tarefaDTO.getMeuDia());
+        tarefa.setLista(tarefaDTO.getLista());
         
         return tarefaRepository.save(tarefa);
     }
-
-    @Validated
+   
     public Tarefa editar(@NotNull @Positive Long id, @Valid TarefaDTO tarefaDTO) {
         return tarefaRepository.findById(id)
                 .map(record -> {
@@ -72,14 +72,14 @@ public class TarefaService {
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    @Validated
+    
     public void delete(@PathVariable @NotNull @Positive Long id) {
         tarefaRepository.delete(tarefaRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(id)));
     }
 
 
-    @Scheduled(cron = "0 0 0 * * ?", zone = "America/Sao_Paulo")
+    @Scheduled(cron = "0 */5 * ? * *", zone = "America/Sao_Paulo")
     public List<Tarefa> verificarPeriodos() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -111,7 +111,7 @@ public class TarefaService {
                     tarefaRepository.save(novaTarefa);
                 }
             } else if (repeticao == Repeticao.SEMANALMENTE) {
-                if (day == dayTarefa) {
+                if (day == dayTarefa && dayMonth > dayMonthTarefa) {
                     Tarefa novaTarefa = new Tarefa();
                     novaTarefa.setData(new Date());
                     novaTarefa.setMeuDia(true);

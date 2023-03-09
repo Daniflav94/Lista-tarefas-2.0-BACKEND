@@ -62,4 +62,8 @@ public class Tarefa {
     @Pattern(regexp = "Ativo|Inativo")
     private String status = "Ativo";
 
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Usuario usuario;
+
 }

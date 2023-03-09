@@ -79,7 +79,8 @@ public class TarefaService {
     }
 
 
-    @Scheduled(cron = "0 */5 * ? * *", zone = "America/Sao_Paulo")
+    @Scheduled(cron = "0 0 0 * * ?", zone = "America/Sao_Paulo")
+    //0 */5 * ? * *
     public List<Tarefa> verificarPeriodos() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());

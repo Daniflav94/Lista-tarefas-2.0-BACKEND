@@ -27,5 +27,7 @@ public class UsuarioDTO {
     @NotBlank
     @NotNull 
     protected String senha;
+
+    protected String foto;
     
 }

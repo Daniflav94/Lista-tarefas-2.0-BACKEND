@@ -5,6 +5,7 @@ import java.util.Date;
 import org.hibernate.validator.constraints.Length;
 
 import com.daniele.listatarefas.model.ListaTarefas;
+import com.daniele.listatarefas.model.Usuario;
 import com.daniele.listatarefas.model.enums.Repeticao;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -41,5 +42,9 @@ public class TarefaDTO {
     private Repeticao repeticao;
 
     private ListaTarefas lista;
+
+    @NotBlank
+    @NotNull 
+    private Usuario usuario;
 
 }

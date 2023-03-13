@@ -2,6 +2,7 @@ package com.daniele.listatarefas.dto;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.daniele.listatarefas.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
@@ -18,5 +19,9 @@ public class ListaTarefasDTO {
     @NotNull // não permite nulo e vazio
     @Length(min = 2, max = 100)
     private String nome;
+
+    @NotBlank
+    @NotNull 
+    private Usuario usuario;
     
 }

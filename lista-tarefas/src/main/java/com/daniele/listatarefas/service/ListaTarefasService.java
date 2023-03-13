@@ -36,6 +36,7 @@ public class ListaTarefasService {
     public ListaTarefas criar(@Valid ListaTarefasDTO listaDTO) {
         ListaTarefas listaTarefas  = new ListaTarefas();
         listaTarefas.setNome(listaDTO.getNome());
+        listaTarefas.setUsuario(listaDTO.getUsuario());
         
         return listaTarefasRepository.save(listaTarefas);
     }

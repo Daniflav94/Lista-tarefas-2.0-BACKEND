@@ -2,13 +2,18 @@ package com.daniele.listatarefas;
 
 import java.text.SimpleDateFormat;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.daniele.listatarefas.model.Usuario;
+import com.daniele.listatarefas.model.enums.Perfil;
 import com.daniele.listatarefas.repository.TarefaRepository;
+import com.daniele.listatarefas.repository.UsuarioRepository;
 
 @EnableScheduling
 @SpringBootApplication
@@ -18,8 +23,11 @@ public class ListaTarefasApplication {
 		SpringApplication.run(ListaTarefasApplication.class, args);
 	}
 
+	@Autowired
+    private PasswordEncoder encoder;
+
 	@Bean //vai ser executado assim que a aplicação subir
-	CommandLineRunner initDatabase(TarefaRepository tarefaRepository){
+	CommandLineRunner initDatabase(UsuarioRepository usuarioRepository){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		return args -> {
 			/* tarefaRepository.deleteAll();
@@ -51,6 +59,17 @@ public class ListaTarefasApplication {
 			t4.setRepeticao(Repeticao.MENSALMENTE);
 			t4.setCriadaEm(formatter.parse("03/03/2023"));
 			tarefaRepository.save(t4); */
+
+			usuarioRepository.deleteAll();
+
+			Usuario u1 = new Usuario();
+			u1.setNome("Daniele");
+			u1.setEmail("dani@gmail.com");
+			u1.setPerfil(Perfil.ADMIN);
+			u1.setSenha(encoder.encode("dani123"));
+
+			usuarioRepository.save(u1);
+			
 		};
 	}
 	

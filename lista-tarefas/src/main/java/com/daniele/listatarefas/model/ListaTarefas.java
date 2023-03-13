@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -22,5 +24,9 @@ public class ListaTarefas {
 
     @Column(nullable = false, length = 100)
     private String nome;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Usuario usuario;
     
 }

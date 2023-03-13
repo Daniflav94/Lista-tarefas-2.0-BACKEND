@@ -53,6 +53,7 @@ public class TarefaService {
         tarefa.setCriadaEm(new Date());
         tarefa.setMeuDia(tarefaDTO.getMeuDia());
         tarefa.setLista(tarefaDTO.getLista());
+        tarefa.setUsuario(tarefaDTO.getUsuario());
         
         return tarefaRepository.save(tarefa);
     }

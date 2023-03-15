@@ -1,5 +1,6 @@
 package com.daniele.listatarefas.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,21 +29,25 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/{email}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
+    @GetMapping("/email/{email}")
     public Usuario filtrarPorEmail(@PathVariable String email) {
         return usuarioService.filtrarPorEmail(email);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
     @GetMapping("/{id}")
     public Usuario buscarPorId(@PathVariable @NotNull @Positive Long id) {
         return usuarioService.buscarPorId(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
     @PostMapping()
     public Usuario salvar(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         return usuarioService.salvar(usuarioDTO);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
     @PutMapping()
     public Usuario editar(@PathVariable Long id, @Valid @RequestBody UsuarioDTO usuarioDTO) {
         return usuarioService.editar(id, usuarioDTO);

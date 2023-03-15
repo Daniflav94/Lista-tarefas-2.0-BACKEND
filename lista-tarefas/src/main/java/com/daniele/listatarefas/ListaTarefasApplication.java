@@ -60,7 +60,7 @@ public class ListaTarefasApplication {
 			t4.setCriadaEm(formatter.parse("03/03/2023"));
 			tarefaRepository.save(t4); */
 
-			usuarioRepository.deleteAll();
+			/* usuarioRepository.deleteAll();
 
 			Usuario u1 = new Usuario();
 			u1.setNome("Daniele");
@@ -68,7 +68,7 @@ public class ListaTarefasApplication {
 			u1.setPerfil(Perfil.ADMIN);
 			u1.setSenha(encoder.encode("dani123"));
 
-			usuarioRepository.save(u1);
+			usuarioRepository.save(u1); */
 			
 		};
 	}

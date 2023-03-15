@@ -1,10 +1,13 @@
 package com.daniele.listatarefas.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.daniele.listatarefas.dto.TarefaDTO;
 import com.daniele.listatarefas.exception.RecordNotFoundException;
 import com.daniele.listatarefas.model.Tarefa;
+import com.daniele.listatarefas.model.Usuario;
 import com.daniele.listatarefas.model.enums.Repeticao;
 import com.daniele.listatarefas.repository.TarefaRepository;
 
@@ -25,14 +29,39 @@ public class TarefaService {
 
     private final TarefaRepository tarefaRepository;
 
-    public TarefaService(TarefaRepository tarefaRepository) {
+    private UsuarioService usuarioService;   
+
+    public TarefaService(TarefaRepository tarefaRepository, UsuarioService usuarioService) {
         this.tarefaRepository = tarefaRepository;
+        this.usuarioService = usuarioService;
     }
 
     public List<Tarefa> listar() {
-        return tarefaRepository.findByStatus("Ativo");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String nome;
+
+        if (principal instanceof UserDetails) {
+            nome = ((UserDetails) principal).getUsername();
+        } else {
+            nome = principal.toString();
+        }
+
+        Usuario usuarioLogado = usuarioService.filtrarPorEmail(nome);
+
+        ArrayList<Tarefa> tarefas = new ArrayList<>();
+
+        List<Tarefa> lista = this.tarefaRepository.findByStatusAndUsuario(usuarioLogado.getId());
+
+        lista.forEach(tarefa -> {
+            if(tarefa.getStatus() != "Inativo"){     
+                tarefas.add(tarefa);
+            }   
+        });
+
+        return tarefas;                
     }
-  
+
     public Tarefa buscarPorId(@PathVariable @NotNull @Positive Long id) { // @PathVariable indica que o parametro será
                                                                           // parte da url
         // @NotNull @Positive por ser tipo Long (objeto), permite valor nulo e números
@@ -54,10 +83,10 @@ public class TarefaService {
         tarefa.setMeuDia(tarefaDTO.getMeuDia());
         tarefa.setLista(tarefaDTO.getLista());
         tarefa.setUsuario(tarefaDTO.getUsuario());
-        
+
         return tarefaRepository.save(tarefa);
     }
-   
+
     public Tarefa editar(@NotNull @Positive Long id, @Valid TarefaDTO tarefaDTO) {
         return tarefaRepository.findById(id)
                 .map(record -> {
@@ -68,20 +97,19 @@ public class TarefaService {
                     record.setFavorito(tarefaDTO.getFavorito());
                     record.setRepeticao(tarefaDTO.getRepeticao());
                     record.setMeuDia(tarefaDTO.getMeuDia());
-                    
+                    record.setDataConclusao(tarefaDTO.getDataConclusao());
+
                     return tarefaRepository.save(record);
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    
     public void delete(@PathVariable @NotNull @Positive Long id) {
         tarefaRepository.delete(tarefaRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(id)));
     }
 
-
     @Scheduled(cron = "0 0 0 * * ?", zone = "America/Sao_Paulo")
-    //0 */5 * ? * *
+    // 0 */5 * ? * *
     public List<Tarefa> verificarPeriodos() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());

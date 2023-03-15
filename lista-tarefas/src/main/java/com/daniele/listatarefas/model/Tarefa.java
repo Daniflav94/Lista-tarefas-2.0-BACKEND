@@ -3,7 +3,6 @@ package com.daniele.listatarefas.model;
 import java.util.Date;
 
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import com.daniele.listatarefas.model.enums.Repeticao;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,7 +14,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
@@ -63,7 +61,6 @@ public class Tarefa {
     private String status = "Ativo";
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Usuario usuario;
 
 }

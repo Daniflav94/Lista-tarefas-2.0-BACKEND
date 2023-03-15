@@ -2,6 +2,8 @@ package com.daniele.listatarefas.service;
 
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.daniele.listatarefas.dto.ListaTarefasDTO;
 import com.daniele.listatarefas.exception.RecordNotFoundException;
 import com.daniele.listatarefas.model.ListaTarefas;
+import com.daniele.listatarefas.model.Usuario;
 import com.daniele.listatarefas.repository.ListaTarefasRepository;
 
 import jakarta.validation.Valid;
@@ -20,12 +23,29 @@ public class ListaTarefasService {
 
     private final ListaTarefasRepository listaTarefasRepository;
 
-    public ListaTarefasService(ListaTarefasRepository listaTarefasRepository) {
+    private UsuarioService usuarioService;
+
+    
+
+    public ListaTarefasService(ListaTarefasRepository listaTarefasRepository, UsuarioService usuarioService) {
         this.listaTarefasRepository = listaTarefasRepository;
+        this.usuarioService = usuarioService;
     }
 
     public List<ListaTarefas> listar(){
-        return listaTarefasRepository.findAll();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String nome;
+
+        if (principal instanceof UserDetails) {
+            nome = ((UserDetails) principal).getUsername();
+        } else {
+            nome = principal.toString();
+        }
+
+        Usuario usuarioLogado = usuarioService.filtrarPorEmail(nome);
+
+        return listaTarefasRepository.findByStatusAndUsuario(usuarioLogado.getId());
     }
 
     @Validated

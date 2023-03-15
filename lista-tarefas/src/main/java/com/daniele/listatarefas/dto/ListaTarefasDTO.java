@@ -20,7 +20,6 @@ public class ListaTarefasDTO {
     @Length(min = 2, max = 100)
     private String nome;
 
-    @NotBlank
     @NotNull 
     private Usuario usuario;
     

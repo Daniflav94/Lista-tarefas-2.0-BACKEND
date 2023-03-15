@@ -3,6 +3,7 @@ package com.daniele.listatarefas.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,17 +36,20 @@ public class TarefaController {
         this.tarefaService = tarefaService;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
     @GetMapping 
     public List<Tarefa> listar() {
         return tarefaService.listar();               
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
     @GetMapping("/{id}") //precisamos passar o parametro dinâmico que será inserido no final da url
     public Tarefa buscarPorId(@PathVariable @NotNull @Positive Long id) { //@PathVariable indica que o parametro será parte da url
         //@NotNull @Positive por ser tipo Long (objeto), permite valor nulo e números negativos, essas anotações evitam isso
         return tarefaService.buscarPorId(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Tarefa criar(@RequestBody @Valid TarefaDTO tarefa) { 
@@ -59,11 +63,13 @@ public class TarefaController {
         return tarefaService.criar(tarefa);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
     @PutMapping("/{id}")
     public Tarefa editar(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid TarefaDTO tarefa) {
         return tarefaService.editar(id, tarefa);       
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable @NotNull @Positive Long id) {

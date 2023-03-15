@@ -43,8 +43,7 @@ public class TarefaDTO {
 
     private ListaTarefas lista;
 
-    @NotBlank
-    @NotNull 
+    @NotNull // não permite nulo e vazio
     private Usuario usuario;
 
 }

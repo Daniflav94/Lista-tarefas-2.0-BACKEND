@@ -12,7 +12,6 @@ import com.daniele.listatarefas.service.AuthService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth/login")
 public class AuthController {
 
     private AuthService authService;
@@ -21,7 +20,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping
+    @PostMapping("/api/auth/login")
     public TokenDTO login(@Valid @RequestBody CredenciaisDTO dto) {
         return authService.login(dto);
     }

@@ -25,20 +25,20 @@ public class Usuario {
     protected Long id;
 
     @Column(length = 100, nullable = false)
-    protected String nome;
+    private String nome;
 
     @Column(length = 150, nullable = false, unique = true)
-    protected String email;
+    private String email;
 
     @JsonIgnore // impede a leitura da senha no JSON
     @Column(nullable = false)
-    protected String senha;
+    private String senha;
 
-    protected String foto;
+    private String foto;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    protected Perfil perfil; // Indica o que este usuário é no sistema
+    private Perfil perfil; // Indica o que este usuário é no sistema
 
     
 }

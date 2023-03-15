@@ -22,6 +22,9 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
@@ -40,7 +43,7 @@ public class UsuarioService {
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setNome(usuarioDTO.getNome());
         usuario.setPerfil(Perfil.USUARIO);
-        usuario.setSenha(usuarioDTO.getSenha());
+        usuario.setSenha(encoder.encode(usuarioDTO.getSenha()));
 
         return usuarioRepository.save(usuario);   
     }

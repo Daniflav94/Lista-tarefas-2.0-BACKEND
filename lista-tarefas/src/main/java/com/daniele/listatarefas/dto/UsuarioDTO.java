@@ -13,21 +13,21 @@ import lombok.Data;
 public class UsuarioDTO {
 
     @JsonProperty("_id")
-    protected Long id;
+    private Long id;
 
     @NotBlank
     @NotNull 
     @Length(min = 2, max = 100)
-    protected String nome;
+    private String nome;
 
     @NotBlank
     @Email
-    protected String email;
+    private String email;
 
     @NotBlank
     @NotNull 
-    protected String senha;
+    private String senha;
 
-    protected String foto;
+    private String foto;
     
 }

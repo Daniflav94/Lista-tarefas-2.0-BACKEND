@@ -2,6 +2,7 @@ package com.daniele.listatarefas.security;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,19 +18,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class TokenFilter extends OncePerRequestFilter {
-
+    @Autowired
     private TokenUtil tokenUtil;
 
-    private UsuarioSecurityService usuarioSecurityService;
+    @Autowired
+    private UsuarioSecurityService service;
 
-    public TokenFilter(TokenUtil tokenUtil, UsuarioSecurityService usuarioSecurityService) {
-        this.tokenUtil = tokenUtil;
-        this.usuarioSecurityService = usuarioSecurityService;
-    }
 
+    // Este método é chamado para toda requisição feita pelo cliente
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (!validarCabecalho(request)) {
             filterChain.doFilter(request, response);
             return;
@@ -37,32 +35,38 @@ public class TokenFilter extends OncePerRequestFilter {
 
         String token = this.extrairToken(request);
 
+        // Passo 3
         if (!this.tokenUtil.validarToken(token)) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        // Passo 4
         String email = this.tokenUtil.extrairEmail(token);
-        UserDetails usuario = this.usuarioSecurityService.loadUserByUsername(email);
-
-        //Configura o usuário encontrado como autenticado na aplicação
+        UserDetails usuario = this.service.loadUserByUsername(email);
+        // Configura o usuário encontrado como autenticado na aplicação
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(usuario.getUsername(), usuario.getPassword(), usuario.getAuthorities()));
         filterChain.doFilter(request, response);
-
-        //Resumo: Extrair do cabeçalho as informações do token, com base nessas informações
-        //busca dados do usuário e então indica para a segurança da aplicação que o usuário é válido
-        //os próximos filtros já irão conhecer o usuário e permitir o acesso
+        // Resumo: Extrair do cabeçalho as informações do token,
+        // com base nessas informações busca dados do usuário e então indica
+        // para a segurança da aplicação que o usuário válido
+        // Os próximos filtros já irão conhecer usuário e permitir o acesso
     }
 
+    // Passo 3
     private String extrairToken(HttpServletRequest request) {
+        // "Bearer <JWT>"
         String cabecalho = request.getHeader("Authorization");
 
-        return cabecalho.substring(7); // vai cortar o Bearer e pegar o código do JWT
+        return cabecalho.substring(7); // Retorna apenas o codigo do JWT
     }
 
+    // Passo 1 & 2
     private boolean validarCabecalho(HttpServletRequest request) {
+        // extrai do cliente o cabeçalho com o possível token
         String cabecalho = request.getHeader("Authorization");
-
+        // O cabeçalho enviado pelo cliente é valido se
+        // Possuir o Authorization e o valor começar com "Bearer eysdadadad"
         return cabecalho != null && cabecalho.startsWith("Bearer");
     }
 

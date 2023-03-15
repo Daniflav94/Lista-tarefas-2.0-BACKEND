@@ -29,7 +29,7 @@ import java.util.List;
 public class SecurityConfig {
     // /auth/login, /auth/cadastro, /auth/logout
     // /cargos/** -> /cargos/filtrar, /cargos/1
-    private static final String[] PUBLIC_ENDPOINTS = {"/auth/**"}; // aqui iremos colocar as principais rotas publicas
+    private static final String[] PUBLIC_ENDPOINTS = {"/api/auth/**", "/api/usuario/**"}; // aqui iremos colocar as principais rotas publicas
 
     @Autowired
     private TokenFilter filter;
@@ -67,11 +67,10 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         // Criamos uma nova configuração do CORS e habilitamos os 4 verbos mais usados. Em seguida indicamos quais URL serão permitidas pelo CORS
         CorsConfiguration configuration = new CorsConfiguration();
-        // configuration.addAllowedOrigin("http://localhost:4200");
+        //configuration.addAllowedOrigin("http://localhost:4200/api/usuario");
         configuration.setAllowedMethods(List.of(
                 HttpMethod.GET.name(),
                 HttpMethod.PUT.name(),
-                HttpMethod.PATCH.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.DELETE.name()
         ));

@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface ListaTarefasRepository extends JpaRepository<ListaTarefas, Long> {
     @Query(value = "SELECT * FROM listas WHERE usuario_id = :usuario", nativeQuery = true)
-    List<ListaTarefas> findByStatusAndUsuario(Long usuario);
+    List<ListaTarefas> findByUsuario(Long usuario);
 }

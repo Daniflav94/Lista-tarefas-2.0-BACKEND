@@ -48,7 +48,7 @@ public class UsuarioController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USUARIO')")
-    @PutMapping()
+    @PutMapping("/{id}")
     public Usuario editar(@PathVariable Long id, @Valid @RequestBody UsuarioDTO usuarioDTO) {
         return usuarioService.editar(id, usuarioDTO);
     }

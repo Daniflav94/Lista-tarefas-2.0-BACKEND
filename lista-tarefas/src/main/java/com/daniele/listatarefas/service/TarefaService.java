@@ -52,13 +52,11 @@ public class TarefaService {
 
         ArrayList<Tarefa> tarefas = new ArrayList<>();
 
-        List<Tarefa> lista = this.tarefaRepository.findByUsuario(usuarioLogado.getId());
+        List<Tarefa> list = this.tarefaRepository.findByUsuario(usuarioLogado.getId());
 
-        lista.forEach(tarefa -> {
+        list.forEach(tarefa -> {
             if(tarefa.getStatus() == Status.ATIVO){ 
-                System.out.println(tarefa.getStatus() + "Adicionei essa tarefa");    
-                tarefas.add(tarefa);
-                
+                tarefas.add(tarefa);               
             }   
         });
         System.out.println(tarefas);

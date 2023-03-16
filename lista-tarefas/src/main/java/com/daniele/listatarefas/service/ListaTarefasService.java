@@ -45,7 +45,7 @@ public class ListaTarefasService {
 
         Usuario usuarioLogado = usuarioService.filtrarPorEmail(nome);
 
-        return listaTarefasRepository.findByStatusAndUsuario(usuarioLogado.getId());
+        return listaTarefasRepository.findByUsuario(usuarioLogado.getId());
     }
 
     @Validated

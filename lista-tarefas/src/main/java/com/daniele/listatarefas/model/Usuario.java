@@ -1,7 +1,6 @@
 package com.daniele.listatarefas.model;
 
 import com.daniele.listatarefas.model.enums.Perfil;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -30,7 +29,6 @@ public class Usuario {
     @Column(length = 150, nullable = false, unique = true)
     private String email;
 
-    @JsonIgnore // impede a leitura da senha no JSON
     @Column(nullable = false)
     private String senha;
 

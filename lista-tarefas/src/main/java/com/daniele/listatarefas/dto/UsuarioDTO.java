@@ -29,5 +29,11 @@ public class UsuarioDTO {
     private String senha;
 
     private String foto;
+
+    private String temaHome;
+
+    private String temaMeuDia;
+
+    private String temaImportante;
     
 }

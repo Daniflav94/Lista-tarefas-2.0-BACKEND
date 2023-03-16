@@ -14,5 +14,5 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long>{
     List<Tarefa> findByStatus(String status);
 
     @Query(value = "SELECT * FROM tarefas WHERE usuario_id = :usuario", nativeQuery = true)
-    List<Tarefa> findByStatusAndUsuario(Long usuario);
+    List<Tarefa> findByUsuario(Long usuario);
 }

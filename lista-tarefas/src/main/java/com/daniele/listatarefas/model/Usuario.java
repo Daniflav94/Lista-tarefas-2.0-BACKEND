@@ -40,5 +40,11 @@ public class Usuario {
     @Column(nullable = false)
     private Perfil perfil; // Indica o que este usuário é no sistema
 
+    private String temaHome;
+
+    private String temaMeuDia;
+
+    private String temaImportante;
+
     
 }

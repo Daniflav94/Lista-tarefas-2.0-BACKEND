@@ -17,6 +17,7 @@ import com.daniele.listatarefas.exception.RecordNotFoundException;
 import com.daniele.listatarefas.model.Tarefa;
 import com.daniele.listatarefas.model.Usuario;
 import com.daniele.listatarefas.model.enums.Repeticao;
+import com.daniele.listatarefas.model.enums.Status;
 import com.daniele.listatarefas.repository.TarefaRepository;
 
 import jakarta.validation.Valid;
@@ -51,14 +52,16 @@ public class TarefaService {
 
         ArrayList<Tarefa> tarefas = new ArrayList<>();
 
-        List<Tarefa> lista = this.tarefaRepository.findByStatusAndUsuario(usuarioLogado.getId());
+        List<Tarefa> lista = this.tarefaRepository.findByUsuario(usuarioLogado.getId());
 
         lista.forEach(tarefa -> {
-            if(tarefa.getStatus() != "Inativo"){     
+            if(tarefa.getStatus() == Status.ATIVO){ 
+                System.out.println(tarefa.getStatus() + "Adicionei essa tarefa");    
                 tarefas.add(tarefa);
+                
             }   
         });
-
+        System.out.println(tarefas);
         return tarefas;                
     }
 
@@ -108,8 +111,8 @@ public class TarefaService {
                 .orElseThrow(() -> new RecordNotFoundException(id)));
     }
 
-    @Scheduled(cron = "0 0 0 * * ?", zone = "America/Sao_Paulo")
-    // 0 */5 * ? * *
+    @Scheduled(cron = "0 0 12 * * ?", zone = "America/Sao_Paulo")
+    // 0 0 0 * * ?
     public List<Tarefa> verificarPeriodos() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -138,6 +141,7 @@ public class TarefaService {
                     novaTarefa.setFavorito(false);
                     novaTarefa.setNome(tarefa.getNome());
                     novaTarefa.setRepeticao(tarefa.getRepeticao());
+                    novaTarefa.setUsuario(tarefa.getUsuario());
                     tarefaRepository.save(novaTarefa);
                 }
             } else if (repeticao == Repeticao.SEMANALMENTE) {
@@ -151,6 +155,7 @@ public class TarefaService {
                     novaTarefa.setFavorito(false);
                     novaTarefa.setNome(tarefa.getNome());
                     novaTarefa.setRepeticao(tarefa.getRepeticao());
+                    novaTarefa.setUsuario(tarefa.getUsuario());
                     tarefaRepository.save(novaTarefa);
                 } else {
                     tarefa.setMeuDia(false);
@@ -169,6 +174,7 @@ public class TarefaService {
                             novaTarefa.setFavorito(false);
                             novaTarefa.setNome(tarefa.getNome());
                             novaTarefa.setRepeticao(tarefa.getRepeticao());
+                            novaTarefa.setUsuario(tarefa.getUsuario());
                             tarefaRepository.save(novaTarefa);
                         } else {
                             tarefa.setMeuDia(false);
@@ -191,6 +197,7 @@ public class TarefaService {
                             novaTarefa.setFavorito(false);
                             novaTarefa.setNome(tarefa.getNome());
                             novaTarefa.setRepeticao(tarefa.getRepeticao());
+                            novaTarefa.setUsuario(tarefa.getUsuario());
                             tarefaRepository.save(novaTarefa);
                         } else {
                             tarefa.setMeuDia(false);
@@ -213,6 +220,7 @@ public class TarefaService {
                             novaTarefa.setFavorito(false);
                             novaTarefa.setNome(tarefa.getNome());
                             novaTarefa.setRepeticao(tarefa.getRepeticao());
+                            novaTarefa.setUsuario(tarefa.getUsuario());
                             tarefaRepository.save(novaTarefa);
                         } else {
                             tarefa.setMeuDia(false);

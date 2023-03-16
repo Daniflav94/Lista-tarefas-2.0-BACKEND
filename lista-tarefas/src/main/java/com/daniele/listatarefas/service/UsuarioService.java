@@ -52,6 +52,9 @@ public class UsuarioService {
         return usuarioRepository.findById(id)
         .map(record -> {
             record.setFoto(usuarioDTO.getFoto());
+            record.setTemaMeuDia(usuarioDTO.getTemaMeuDia());
+            record.setTemaHome(usuarioDTO.getTemaHome());
+            record.setTemaImportante(usuarioDTO.getTemaImportante());
 
             return usuarioRepository.save(record);
         }).orElseThrow(() -> new RecordNotFoundException(id));

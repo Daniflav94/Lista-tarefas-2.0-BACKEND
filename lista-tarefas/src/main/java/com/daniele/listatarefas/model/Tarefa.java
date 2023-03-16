@@ -5,6 +5,7 @@ import java.util.Date;
 import org.hibernate.annotations.SQLDelete;
 
 import com.daniele.listatarefas.model.enums.Repeticao;
+import com.daniele.listatarefas.model.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -22,7 +23,7 @@ import lombok.Data;
 @Data
 @Entity //vai indicar que essa classe será uma entidade no banco de dados
 @Table(name = "Tarefas")
-@SQLDelete(sql = "UPDATE Tarefas SET status = 'Inativo' WHERE id = ?") //toda vez que o método delete for acionado, vai executar esse código do SQL
+@SQLDelete(sql = "UPDATE Tarefas SET status = 'INATIVO' WHERE id = ?") //toda vez que o método delete for acionado, vai executar esse código do SQL
 //@Where(clause = "status = 'Ativo'")//toda vez que for feito SELECT, o hibernate vai automaticamente adicionar a cláusula WHERE e aplicar o filtro
 public class Tarefa {
     
@@ -57,8 +58,8 @@ public class Tarefa {
     private ListaTarefas lista;
 
     @Column(nullable = false)
-    @Pattern(regexp = "Ativo|Inativo")
-    private String status = "Ativo";
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ATIVO;
 
     @ManyToOne
     private Usuario usuario;

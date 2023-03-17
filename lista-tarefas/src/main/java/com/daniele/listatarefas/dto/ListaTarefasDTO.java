@@ -22,5 +22,7 @@ public class ListaTarefasDTO {
 
     @NotNull 
     private Usuario usuario;
+
+    private String tema;
     
 }

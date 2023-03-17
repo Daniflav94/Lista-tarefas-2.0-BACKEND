@@ -10,9 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.daniele.listatarefas.model.Usuario;
-import com.daniele.listatarefas.model.enums.Perfil;
-import com.daniele.listatarefas.repository.TarefaRepository;
 import com.daniele.listatarefas.repository.UsuarioRepository;
 
 @EnableScheduling
@@ -28,7 +25,7 @@ public class ListaTarefasApplication {
 
 	@Bean //vai ser executado assim que a aplicação subir
 	CommandLineRunner initDatabase(UsuarioRepository usuarioRepository){
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		return args -> {
 			/* tarefaRepository.deleteAll();
 

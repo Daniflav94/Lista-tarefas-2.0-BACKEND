@@ -26,5 +26,7 @@ public class ListaTarefas {
 
     @ManyToOne
     private Usuario usuario;
+
+    private String tema;
     
 }
